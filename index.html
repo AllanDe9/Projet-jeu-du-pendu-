@@ -3,9 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu du pendu</title>
+    <title>Jeu du Pendu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="game.js"></script>
 </head>
-<body>
-    
+<body class="bg-gradient-to-br from-indigo-500 to-purple-600 min-h-screen flex justify-center items-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl p-10 max-w-2xl w-full">
+        <h1 class="text-4xl font-bold text-gray-800 mb-8 text-center">Jeu du Pendu</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-gray-100 p-6 rounded-lg flex items-center justify-center h-80">
+                <!-- Dessin du pendu -->
+            </div>
+
+            <div class="flex flex-col justify-between">
+                <div>
+                    <div id="word" class="text-3xl font-bold text-indigo-600 font-mono mb-6 tracking-widest min-h-12 flex items-center justify-center">_ _ _ _ _</div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <p class="text-gray-700 mb-2">Tentatives restantes: <strong id="tries" class="text-indigo-600">6</strong></p>
+                        <p id="letters-info" class="text-gray-700 mb-3">Lettres trouvées: <strong id="found-letters" class="text-indigo-600">0</strong>/<strong id="total-letters" class="text-indigo-600"></strong></p>
+                        <div class="text-red-600 font-bold break-words">
+                            Mauvaises lettres: <span id="wrong-list">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="message" class="text-2xl font-bold text-center my-6 min-h-12 p-4 rounded-lg transition-all duration-300"></div>
+
+        <div id="keyboard" class="grid grid-cols-6 md:grid-cols-13 gap-2 mb-8"></div>
+
+        <div class="flex gap-3 justify-center flex-col sm:flex-row">
+            <button onclick="newGame()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition transform hover:-translate-y-0.5">
+                Nouvelle partie
+            </button>
+        </div>
+    </div>
 </body>
 </html>
