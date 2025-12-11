@@ -34,6 +34,8 @@ async function initGame(difficulty = null) {
         await loadWords();
     }
     const difficultyParams = difficultyLengths[difficulty];
+    if(!difficultyParams) return;
+    
     maxMistakes = difficultyParams.maxMistakes;
     currentWord = getRandomWordByDifficulty(difficulty);
     guessedLetters = [];
