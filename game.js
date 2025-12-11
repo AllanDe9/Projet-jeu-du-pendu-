@@ -123,6 +123,9 @@ function newGame(difficulty = null) {
     const difficultyParams = difficultyLengths[difficulty];
     document.getElementById('difficulty').textContent = `${difficultyParams.name}`;
     document.getElementById('difficulty').classList = `${difficultyParams.color}`;
+    if(difficulty !== null){
+        document.getElementById('gameStatus').classList = `hidden`;
+    }
 }
 
 document.getElementById('btneasy').addEventListener('click', () => newGame('easy'));
