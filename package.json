@@ -1,0 +1,25 @@
+{
+  "name": "projet-jeu-du-pendu-",
+  "version": "1.0.0",
+  "description": "Jeu du pendu développé en JS",
+  "main": "game.js",
+  "scripts": {
+    "start": "serve .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AllanDe9/Projet-jeu-du-pendu-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AllanDe9/Projet-jeu-du-pendu-/issues"
+  },
+  "homepage": "https://github.com/AllanDe9/Projet-jeu-du-pendu-#readme",
+  "devDependencies": {
+    "serve": "^14.2.5"
+  }
+}

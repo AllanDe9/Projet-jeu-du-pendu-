@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu du Pendu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="game.js"></script>
+    <script type="module" src="game.js"></script>
 </head>
 <body class="bg-gradient-to-br from-indigo-500 to-purple-600 min-h-screen flex justify-center items-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl p-10 max-w-2xl w-full">
@@ -21,6 +21,7 @@
                     <div id="word" class="text-3xl font-bold text-indigo-600 font-mono mb-6 tracking-widest min-h-12 flex items-center justify-center">_ _ _ _ _</div>
                     
                     <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <p class="text-gray-700 mb-2">Niveau: <strong id="difficulty" class="text-indigo-600">Aucune Difficulté</strong></p>
                         <p class="text-gray-700 mb-2">Tentatives restantes: <strong id="tries" class="text-indigo-600">6</strong></p>
                         <p id="letters-info" class="text-gray-700 mb-3">Lettres trouvées: <strong id="found-letters" class="text-indigo-600">0</strong>/<strong id="total-letters" class="text-indigo-600"></strong></p>
                         <div class="text-red-600 font-bold break-words">
@@ -36,8 +37,14 @@
         <div id="keyboard" class="grid grid-cols-6 md:grid-cols-13 gap-2 mb-8"></div>
 
         <div class="flex gap-3 justify-center flex-col sm:flex-row">
-            <button onclick="newGame()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition transform hover:-translate-y-0.5">
-                Nouvelle partie
+            <button onclick="newGame('easy')" class="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition transform hover:-translate-y-0.5">
+                Facile <br />(4-6 lettres)
+            </button>
+            <button onclick="newGame('medium')" class="flex-1 bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition transform hover:-translate-y-0.5">
+                Moyen <br />(7-10 lettres)
+            </button>
+            <button onclick="newGame('hard')" class="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition transform hover:-translate-y-0.5">
+                Difficile <br />(11+ lettres)
             </button>
         </div>
     </div>

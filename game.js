@@ -1,15 +1,49 @@
-const words = [
-    //Importer une bibliothèque de mots 
-];
+import { words, loadWords } from "./words.js";
 
 let currentWord = '';
 let guessedLetters = [];
 let wrongLetters = [];
 let mistakes = 0;
-const maxMistakes = 6; // A gérer avec la difficulté
+let maxMistakes = 6;
 
-function initGame() {
-    currentWord = "TEST"// A gérer avec la difficulté + faire un import de mots;
+const difficultyLengths = {
+    easy: {name: 'Facile', color:'text-green-600', min: 4, max: 6, maxMistakes: 8 },
+    medium: {name: 'Moyen', color: 'text-yellow-600', min: 7, max: 10, maxMistakes: 6},
+    hard: {name: 'Difficile', color: 'text-red-600', min: 11, max: 100, maxMistakes: 4}
+};
+
+function removeAccents(str) {
+    return str
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/œ/gi, 'oe')
+        .replace(/æ/gi, 'ae')
+        .toUpperCase();
+}
+
+function getRandomWordByDifficulty(difficulty) {
+    const range = difficultyLengths[difficulty];
+    console.log(range);
+    const filteredWords = words.filter(word => {
+        const cleanWord = removeAccents(word);
+        return cleanWord.length >= range.min && cleanWord.length <= range.max;
+    });
+    
+    if (filteredWords.length === 0) {
+        console.warn(`Aucun mot trouvé pour la difficulté ${difficulty}`);
+        return removeAccents(words[Math.floor(Math.random() * words.length)]);
+    }
+    
+    return removeAccents(filteredWords[Math.floor(Math.random() * filteredWords.length)]);
+}
+
+async function initGame(difficulty = null) {
+    if (words.length === 0) {
+        await loadWords();
+    }
+    const difficultyParams = difficultyLengths[difficulty];
+    maxMistakes = difficultyParams.maxMistakes;
+    currentWord = getRandomWordByDifficulty(difficulty);
     guessedLetters = [];
     wrongLetters = [];
     mistakes = 0;
@@ -92,8 +126,14 @@ function endGame(won) {
     }
 }
 
-function newGame() {
-    initGame();
+function newGame(difficulty = null) {
+    initGame(difficulty);
+    const difficultyParams = difficultyLengths[difficulty];
+    document.getElementById('difficulty').textContent = `${difficultyParams.name}`;
+    document.getElementById('difficulty').classList = `${difficultyParams.color}`;
 }
+
+window.newGame = newGame;
+window.initGame = initGame;
 
 window.addEventListener('load', initGame);
