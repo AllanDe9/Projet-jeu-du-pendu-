@@ -1,4 +1,5 @@
 import { words, loadWords } from "./words.js";
+import removeAccents from "./removeAccent.js";
 
 let currentWord = '';
 let guessedLetters = [];
@@ -11,15 +12,6 @@ const difficultyLengths = {
     medium: {name: 'Moyen', color: 'text-yellow-600', min: 7, max: 10, maxMistakes: 6},
     hard: {name: 'Difficile', color: 'text-red-600', min: 11, max: 100, maxMistakes: 4}
 };
-
-function removeAccents(str) {
-    return str
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/œ/gi, 'oe')
-        .replace(/æ/gi, 'ae')
-        .toUpperCase();
-}
 
 function getRandomWordByDifficulty(difficulty) {
     const range = difficultyLengths[difficulty];
@@ -133,7 +125,7 @@ function newGame(difficulty = null) {
     document.getElementById('difficulty').classList = `${difficultyParams.color}`;
 }
 
-window.newGame = newGame;
-window.initGame = initGame;
-
+document.getElementById('btneasy').addEventListener('click', () => newGame('easy'));
+document.getElementById('btnmedium').addEventListener('click', () => newGame('medium'));
+document.getElementById('btnhard').addEventListener('click', () => newGame('hard'));
 window.addEventListener('load', initGame);
