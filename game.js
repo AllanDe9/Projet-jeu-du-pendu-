@@ -6,6 +6,8 @@ let guessedLetters = [];
 let wrongLetters = [];
 let mistakes = 0;
 let maxMistakes = 6;
+let isGameOver = false;
+let currentDifficulty = null;
 
 const difficultyLengths = {
     easy: {name: 'Facile', color:'text-green-600', min: 4, max: 6, maxMistakes: 8 },
@@ -33,6 +35,8 @@ async function initGame(difficulty = null) {
     if (words.length === 0) {
         await loadWords();
     }
+    isGameOver = false;
+    currentDifficulty = difficulty;
     const difficultyParams = difficultyLengths[difficulty];
     if(!difficultyParams) return;
     
@@ -45,6 +49,7 @@ async function initGame(difficulty = null) {
     document.getElementById('message').className = '';
     updateDisplay();
     createKeyboard();
+    pictureUpdate(mistakes);
 }
 
 function createKeyboard() {
@@ -58,6 +63,15 @@ function createKeyboard() {
         button.className = 'bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded transition transform hover:-translate-y-0.5 disabled:bg-gray-400 disabled:cursor-not-allowed';
         button.onclick = () => guessLetter(letter, button);
         keyboard.appendChild(button);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (isGameOver) return;
+        const key = event.key.toUpperCase();
+        const buttons = document.querySelectorAll('#keyboard button');
+        const button = [...buttons].find(btn => btn.textContent === key);
+
+        guessLetter(key, button);
     });
 }
 
@@ -73,6 +87,7 @@ function guessLetter(letter, button) {
     } else {
         wrongLetters.push(letter);
         mistakes++;
+        pictureUpdate(mistakes);
     }
 
     updateDisplay();
@@ -106,6 +121,7 @@ function checkGameStatus() {
 }
 
 function endGame(won) {
+    isGameOver = true;
     const messageDiv = document.getElementById('message');
     const buttons = document.querySelectorAll('#keyboard button');
 
@@ -128,6 +144,104 @@ function newGame(difficulty = null) {
     if(difficulty !== null){
         document.getElementById('gameStatus').classList = `hidden`;
     }
+}
+
+const sourceImages = [
+  ``,
+
+`
+    |
+    |
+    |
+    |
+ ___|___`,
+
+`  ______
+   |/   |
+    |
+    |
+    |
+ ___|___`,
+
+`  ______
+   |/   |
+    |   O
+    |
+    |
+ ___|___`,
+
+`  ______
+   |/   |
+    |   O
+    |   |
+    |   |
+ ___|___`,
+
+`  ______
+   |/   |
+    |   O
+    |  /|
+    |   |
+ ___|___`,
+
+`  ______
+   |/   |
+    |   O
+    |  /|\\
+    |   |
+ ___|___`,
+
+`  ______
+   |/   |
+    |   O
+    |  /|\\
+    |   |
+ ___|__/_`,
+
+`  ______
+   |/   |
+    |  😵‍💫
+    |  /|\\
+    |   |
+ ___|__/_\\\\_`
+];
+
+const easyImages = sourceImages;
+
+const mediumImages = [
+    sourceImages[0],
+    sourceImages[3],
+    sourceImages[4],
+    sourceImages[5],
+    sourceImages[6],
+    sourceImages[7],
+    sourceImages[8] 
+];
+
+const hardImages = [
+    sourceImages[0],
+    sourceImages[2],
+    sourceImages[4],
+    sourceImages[6],
+    sourceImages[8] 
+];
+function pictureUpdate(mistakes) {
+    const pictureContainer = document.getElementById('picture');
+    let currentArray;
+
+    if (currentDifficulty === 'easy') {
+        currentArray = easyImages;
+    } else if (currentDifficulty === 'medium') {
+        currentArray = mediumImages;
+    } else if (currentDifficulty === 'hard') {
+        currentArray = hardImages;
+    } else {
+        currentArray = easyImages;
+    }
+
+    const asciiArt = currentArray[mistakes];
+
+    pictureContainer.innerHTML = `<pre style="font-family: monospace, monospace; font-size: 1.2rem; line-height: 1.2; text-align: left;">${asciiArt}</pre>`;
 }
 
 document.getElementById('btneasy').addEventListener('click', () => newGame('easy'));
