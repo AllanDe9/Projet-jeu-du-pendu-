@@ -1,5 +1,4 @@
-import { words, loadWords } from "./words.js";
-import removeAccents from "./removeAccent.js";
+import { loadWords } from "./words.js";
 import { easyImages, mediumImages, hardImages } from "./penduImages.js";
 
 let currentWord = '';
@@ -16,32 +15,21 @@ const difficultyLengths = {
     hard: {name: 'Difficile', color: 'text-red-600', min: 11, max: 100, maxMistakes: 4}
 };
 
-function getRandomWordByDifficulty(difficulty) {
+async function getRandomWordByDifficulty(difficulty) {
     const range = difficultyLengths[difficulty];
-    const filteredWords = words.filter(word => {
-        const cleanWord = removeAccents(word);
-        return cleanWord.length >= range.min && cleanWord.length <= range.max;
-    });
-    
-    if (filteredWords.length === 0) {
-        console.warn(`Aucun mot trouvé pour la difficulté ${difficulty}`);
-        return removeAccents(words[Math.floor(Math.random() * words.length)]);
-    }
-    
-    return removeAccents(filteredWords[Math.floor(Math.random() * filteredWords.length)]);
+    const filteredWords = await loadWords(range.min, range.max); 
+
+    return filteredWords[Math.floor(Math.random() * filteredWords.length)].toUpperCase();
 }
 
 async function initGame(difficulty = null) {
-    if (words.length === 0) {
-        await loadWords();
-    }
     isGameOver = false;
     currentDifficulty = difficulty;
     const difficultyParams = difficultyLengths[difficulty];
     if(!difficultyParams) return;
     
     maxMistakes = difficultyParams.maxMistakes;
-    currentWord = getRandomWordByDifficulty(difficulty);
+    currentWord = await getRandomWordByDifficulty(difficulty);
     guessedLetters = [];
     wrongLetters = [];
     mistakes = 0;
